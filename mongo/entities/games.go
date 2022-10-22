@@ -30,6 +30,7 @@ type ArchivedGame struct {
 	Teams    []Team        `json:"teams,omitempty"`
 
 	PlayerTeams map[string]string `bson:"playerTeams" json:"playerTeams,omitempty"`
+	FinalTeams  map[string]string `bson:"finalTeams" json:"finalTeams,omitempty"`
 	PlayerRoles map[string]string `bson:"playerRoles" json:"playerRoles,omitempty"`
 
 	Hours   int8 `bson:"hours" json:"hours"`

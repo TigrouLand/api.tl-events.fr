@@ -15,7 +15,7 @@ import (
 func Members(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	cursor, err := mongo.Get().Collection("players").Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"wins", -1}, {"kills", -1}}))
+	cursor, err := mongo.Get().Collection("players").Find(ctx, bson.D{}, options.Find().SetSort(bson.D{{"name", 1}}))
 	if err != nil {
 		log.Fatal("an error occurred while retrieving the players' data: ", err)
 	}

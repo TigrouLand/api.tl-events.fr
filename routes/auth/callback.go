@@ -69,10 +69,10 @@ func Callback(c *gin.Context) {
 	_, err = mongo.Get().Collection("players").UpdateOne(
 		context.Background(),
 		bson.M{"id": discordID},
-		bson.M{"$set": bson.A{
-			bson.M{"oauth.token": token.AccessToken},
-			bson.M{"oauth.refreshToken": token.RefreshToken},
-			bson.M{"oauth.expiry": token.Expiry},
+		bson.M{"$set": bson.M{
+			"oauth.token":        token.AccessToken,
+			"oauth.refreshToken": token.RefreshToken,
+			"oauth.expiry":       token.Expiry,
 		}},
 	)
 	if err != nil {

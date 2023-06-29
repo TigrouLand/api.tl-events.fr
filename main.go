@@ -20,6 +20,9 @@ func main() {
 	r.Use(middlewares.Sessions())
 	r.Use(cors.Default())
 
+	userFetch := middlewares.UserFetch()
+	userRequired := middlewares.UserRequired()
+
 	r.GET("/", routes.Main)
 	r.GET("/members", routes.Members)
 	r.GET("/modifiers", routes.Modifiers)
@@ -30,6 +33,7 @@ func main() {
 	{
 		authGroup.GET("/login", auth.Login)
 		authGroup.GET("/callback", auth.Callback)
+		authGroup.GET("/self", userFetch, userRequired, auth.Self)
 	}
 
 	err := r.Run()

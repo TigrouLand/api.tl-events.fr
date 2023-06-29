@@ -1,6 +1,6 @@
 # api.tl-events.fr
 
-A micro-application providing a public read-only API of various TL events data, which is used in the main site application: [tl-events.fr](https://github.com/TigrouLand/tl-events.fr).
+A micro-application providing a public API of various TL events data, which is used in the main site application: [tl-events.fr](https://github.com/TigrouLand/tl-events.fr).
 
 ## Used technologies
 
@@ -23,6 +23,20 @@ Thanks to the use of [Golang](https://go.dev/), this micro-application is powerf
   # Run the application:
   ./api
 ```
+
+## Environment variables
+
+| Name                   | Description |
+|------------------------|-------------|
+| `PORT`                 | The port on which the application will be listening                     |
+| `MONGO_URI`            | The URI of the MongoDB database |
+| `MONGO_DATABASE`       | The name of the MongoDB database |
+| `DISCORD_REDIRECT_URL` | The URL to which the Discord OAuth2 authentication will redirect the user |
+| `DISCORD_CLIENT_ID`    | The Discord OAuth2 client ID |
+| `DISCORD_CLIENT_SECRET` | The Discord OAuth2 client secret |
+| `COOKIE_SECRET`        | The secret used to encrypt the cookies |
+| `FRONTEND_URL`         | The URL of the frontend application |
+
 
 ## License
 This project is licensed under the [GNU GPL 3](https://github.com/TigrouLand/api.tl-events.fr/blob/main/LICENCE).

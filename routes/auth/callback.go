@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	mongo2 "go.mongodb.org/mongo-driver/mongo"
 	"os"
+	"strconv"
 )
 
 type DiscordRessourceOwner struct {
@@ -48,11 +49,17 @@ func Callback(c *gin.Context) {
 		return
 	}
 
+	discordID, err := strconv.Atoi(discordUser.ID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "an error occurred while converting user id"})
+		return
+	}
+
 	var player entities.Player
-	err = mongo.Get().Collection("players").FindOne(context.Background(), bson.M{"id": discordUser.ID}).Decode(&player)
+	err = mongo.Get().Collection("players").FindOne(context.Background(), bson.M{"id": discordID}).Decode(&player)
 	if err != nil {
 		if errors.Is(err, mongo2.ErrNoDocuments) {
-			c.Redirect(302, os.Getenv("FRONTEND_URL"))
+			c.Redirect(302, os.Getenv("FRONTEND_URL")+"?error=not_registered")
 			return
 		}
 		c.JSON(500, gin.H{"error": "an error occurred while retrieving user information"})
@@ -61,7 +68,7 @@ func Callback(c *gin.Context) {
 
 	_, err = mongo.Get().Collection("players").UpdateOne(
 		context.Background(),
-		bson.M{"id": discordUser.ID},
+		bson.M{"id": discordID},
 		bson.M{"$set": bson.A{
 			bson.M{"oauth.token": token.AccessToken},
 			bson.M{"oauth.refreshToken": token.RefreshToken},
@@ -73,7 +80,7 @@ func Callback(c *gin.Context) {
 		return
 	}
 
-	session.Set("discordId", discordUser.ID)
+	session.Set("discordID", discordUser.ID)
 	err = session.Save()
 	if err != nil {
 		c.JSON(500, gin.H{"error": "an error occurred while saving the session"})

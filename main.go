@@ -25,7 +25,13 @@ func main() {
 	r.GET("/", routes.Main)
 	r.GET("/members", routes.Members)
 	r.GET("/modifiers", routes.Modifiers)
-	r.GET("/games", routes.Games)
+
+	gamesGroup := r.Group("/games")
+	{
+		gamesGroup.GET("", routes.Games)
+		gamesGroup.GET("/upcoming", routes.UpcomingGame)
+	}
+
 	r.GET("/stats", routes.Stats)
 
 	authGroup := r.Group("/auth")

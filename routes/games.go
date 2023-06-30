@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -201,4 +202,21 @@ func DecodeArchivedGame(game *entities.ArchivedGame, ctx context.Context) {
 			}
 		}
 	}
+}
+
+func UpcomingGame(c *gin.Context) {
+	var ctx = context.Background()
+	unixNow := time.Now().Unix()
+
+	var game entities.Game
+	err := mongo.Get().Collection("games").FindOne(ctx, bson.M{"scheduleDate": bson.M{"$gte": unixNow}}, options.FindOne().SetSort(bson.D{{"scheduleDate", -1}})).Decode(&game)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "no upcoming game found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, bson.M{
+		"name":         game.Name,
+		"scheduleDate": game.ScheduleDate,
+	})
 }

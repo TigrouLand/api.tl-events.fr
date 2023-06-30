@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/tigrouland/api/middlewares"
 	"github.com/tigrouland/api/mongo"
@@ -18,7 +17,7 @@ func main() {
 	r := gin.Default()
 
 	r.Use(middlewares.Sessions())
-	r.Use(cors.Default())
+	r.Use(middlewares.Cors())
 
 	userFetch := middlewares.UserFetch()
 	userRequired := middlewares.UserRequired()

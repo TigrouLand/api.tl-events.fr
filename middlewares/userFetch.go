@@ -8,25 +8,34 @@ import (
 	"github.com/tigrouland/api/mongo"
 	"github.com/tigrouland/api/mongo/entities"
 	"go.mongodb.org/mongo-driver/bson"
+	"log"
 	"time"
 )
 
 func UserFetch() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
-		userID := session.Get("discordId")
-		var player entities.Player
-		switch userID.(type) {
-		case uint:
-			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-			defer cancel()
-			err := mongo.Get().Collection("players").FindOne(ctx, bson.M{"id": userID.(uint)}).Decode(&player)
-			if err == nil {
-				player.DecodeUUID()
-				user := core.PlayerToUser(player)
-				c.Set("user", user)
-			}
+		rawUserID := session.Get("discordId")
+		if rawUserID == nil {
+			c.Next()
+			return
 		}
+		userID := rawUserID.(int)
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		var player entities.Player
+		err := mongo.Get().Collection("players").FindOne(ctx, bson.M{"id": userID}).Decode(&player)
+		if err != nil {
+			log.Println(err)
+			c.Next()
+			return
+		}
+
+		player.DecodeUUID()
+		user := core.PlayerToUser(player)
+		c.Set("user", user)
 		c.Next()
 	}
 }

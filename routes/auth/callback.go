@@ -80,7 +80,7 @@ func Callback(c *gin.Context) {
 		return
 	}
 
-	session.Set("discordID", discordUser.ID)
+	session.Set("discordId", discordID)
 	err = session.Save()
 	if err != nil {
 		c.JSON(500, gin.H{"error": "an error occurred while saving the session"})

@@ -41,7 +41,7 @@ func main() {
 		authGroup.GET("/self", userFetch, userRequired, auth.Self)
 	}
 
-	userGroup := r.Group("/user/:id")
+	userGroup := r.Group("/user/:username")
 	{
 		userGroup.GET("/statistics", user.Statistics)
 	}

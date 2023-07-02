@@ -3,7 +3,6 @@ package core
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/google/uuid"
 	"github.com/tigrouland/api/mongo/entities"
 	"net/http"
 	"os"
@@ -16,12 +15,7 @@ type UpdateRequest struct {
 }
 
 func UpdateMetadata(user entities.User) error {
-	playerUuid, err := uuid.Parse(user.MinecraftProfile.UUID)
-	if err != nil {
-		return err
-	}
-
-	statistics, err := GetStatistics(playerUuid)
+	statistics, err := GetStatistics(user.MinecraftProfile.Username)
 	if err != nil {
 		return err
 	}

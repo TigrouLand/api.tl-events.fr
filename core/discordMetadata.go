@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/tigrouland/api/mongo/entities"
+	"io"
+	"log"
 	"net/http"
 	"os"
 )
@@ -44,13 +46,19 @@ func UpdateMetadata(user entities.User) error {
 	if err != nil {
 		return err
 	}
-	request.Header.Set("Authorization", user.OAuth.AccessToken)
+	request.Header.Set("Authorization", "Bearer "+user.OAuth.AccessToken)
 	request.Header.Set("Content-Type", "application/json")
 
-	_, err = http.DefaultClient.Do(request)
+	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
 		return err
 	}
+
+	all, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	log.Println(string(all))
 
 	return nil
 }

@@ -26,16 +26,16 @@ Thanks to the use of [Golang](https://go.dev/), this micro-application is powerf
 
 ## Environment variables
 
-| Name                   | Description |
-|------------------------|-------------|
-| `PORT`                 | The port on which the application will be listening                     |
-| `MONGO_URI`            | The URI of the MongoDB database |
-| `MONGO_DATABASE`       | The name of the MongoDB database |
-| `DISCORD_REDIRECT_URL` | The URL to which the Discord OAuth2 authentication will redirect the user |
-| `DISCORD_CLIENT_ID`    | The Discord OAuth2 client ID |
-| `DISCORD_CLIENT_SECRET` | The Discord OAuth2 client secret |
-| `COOKIE_SECRET`        | The secret used to encrypt the cookies |
-| `FRONTEND_URL`         | The URL of the frontend application |
+| Name                    | Description                                                               |
+|-------------------------|---------------------------------------------------------------------------|
+| `PORT`                  | The port on which the application will be listening                       |
+| `MONGO_URI`             | The URI of the MongoDB database                                           |
+| `MONGO_DATABASE`        | The name of the MongoDB database                                          |
+| `DISCORD_REDIRECT_URL`  | The URL to which the Discord OAuth2 authentication will redirect the user |
+| `DISCORD_CLIENT_ID`     | The Discord OAuth2 client ID                                              |
+| `DISCORD_CLIENT_SECRET` | The Discord OAuth2 client secret                                          |
+| `COOKIE_SECRET`         | The secret used to encrypt the cookies                                    |
+| `FRONTEND_URL`          | The URL of the frontend application                                       |
 
 
 ## License

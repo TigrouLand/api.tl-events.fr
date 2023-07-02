@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/tigrouland/api/core"
 	"github.com/tigrouland/api/mongo"
 	"github.com/tigrouland/api/mongo/entities"
 	"go.mongodb.org/mongo-driver/bson"
@@ -25,16 +24,14 @@ func UserFetch() gin.HandlerFunc {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 
-		var player entities.Player
-		err := mongo.Get().Collection("players").FindOne(ctx, bson.M{"id": userID}).Decode(&player)
+		var user entities.User
+		err := mongo.Get().Collection("users").FindOne(ctx, bson.M{"id": userID}).Decode(&user)
 		if err != nil {
 			log.Println(err)
 			c.Next()
 			return
 		}
 
-		player.DecodeUUID()
-		user := core.PlayerToUser(player)
 		c.Set("user", user)
 		c.Next()
 	}

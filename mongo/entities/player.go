@@ -1,9 +1,9 @@
 package entities
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"log"
 )
 
 type Player struct {
@@ -17,13 +17,14 @@ type Player struct {
 	Wins        int16            `bson:"wins" json:"wins"`
 }
 
-func (p *Player) DecodeUUID() {
+func (p *Player) DecodeUUID() error {
 	if p.UUID.IsZero() {
-		return
+		return errors.New("uuid is zero")
 	}
 	playerUUID, err := uuid.FromBytes(p.UUID.Data)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	p.DecodedUUID = playerUUID
+	return nil
 }

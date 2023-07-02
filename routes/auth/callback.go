@@ -11,8 +11,10 @@ import (
 	"github.com/tigrouland/api/mongo/entities"
 	"go.mongodb.org/mongo-driver/bson"
 	mongo2 "go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"os"
 	"strconv"
+	"time"
 )
 
 type DiscordRessourceOwner struct {
@@ -65,15 +67,36 @@ func Callback(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "an error occurred while retrieving user information"})
 		return
 	}
+	err = player.DecodeUUID()
+	if err != nil {
+		c.JSON(500, gin.H{"error": "an error occurred while decoding user information"})
+		return
+	}
 
-	_, err = mongo.Get().Collection("players").UpdateOne(
+	user := &entities.User{
+		ID: int64(discordID),
+		MinecraftProfile: entities.MinecraftProfile{
+			UUID:      player.DecodedUUID.String(),
+			Username:  player.Name,
+			UpdatedAt: time.Now(),
+		},
+		DiscordProfile: entities.DiscordProfile{
+			ID:        int64(discordID),
+			Username:  discordUser.Username,
+			UpdatedAt: time.Now(),
+		},
+		OAuth: entities.OAuthUser{
+			AccessToken:  token.AccessToken,
+			RefreshToken: token.RefreshToken,
+			ExpiresAt:    token.Expiry,
+		},
+	}
+
+	_, err = mongo.Get().Collection("users").ReplaceOne(
 		context.Background(),
 		bson.M{"id": discordID},
-		bson.M{"$set": bson.M{
-			"oauth.token":        token.AccessToken,
-			"oauth.refreshToken": token.RefreshToken,
-			"oauth.expiry":       token.Expiry,
-		}},
+		user,
+		options.Replace().SetUpsert(true),
 	)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "an error occurred while updating user information"})

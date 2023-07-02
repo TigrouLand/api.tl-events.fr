@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/tigrouland/api/core"
+	"github.com/tigrouland/api/mongo/entities"
 )
 
 func UserRequired() gin.HandlerFunc {
@@ -13,8 +13,8 @@ func UserRequired() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		user := rawUser.(core.User)
-		if (user == core.User{}) {
+		user := rawUser.(entities.User)
+		if (user == entities.User{}) {
 			c.JSON(401, gin.H{"error": "unauthorized"})
 			c.Abort()
 			return

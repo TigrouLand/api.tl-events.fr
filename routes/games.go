@@ -206,7 +206,7 @@ func DecodeArchivedGame(game *entities.ArchivedGame, ctx context.Context) {
 
 func UpcomingGame(c *gin.Context) {
 	var ctx = context.Background()
-	unixNow := time.Now().Unix()
+	unixNow := time.Now().UnixMilli()
 
 	var game entities.Game
 	err := mongo.Get().Collection("games").FindOne(ctx, bson.M{"scheduleDate": bson.M{"$gte": unixNow}}, options.FindOne().SetSort(bson.D{{"scheduleDate", -1}})).Decode(&game)

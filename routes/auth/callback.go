@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	mongo2 "go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -73,7 +74,7 @@ func Callback(c *gin.Context) {
 		return
 	}
 
-	user := &entities.User{
+	user := entities.User{
 		ID: int64(discordID),
 		MinecraftProfile: entities.MinecraftProfile{
 			UUID:      player.DecodedUUID.String(),
@@ -99,6 +100,13 @@ func Callback(c *gin.Context) {
 		options.Replace().SetUpsert(true),
 	)
 	if err != nil {
+		c.JSON(500, gin.H{"error": "an error occurred while updating user information"})
+		return
+	}
+
+	err = core.UpdateMetadata(user)
+	if err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{"error": "an error occurred while updating user information"})
 		return
 	}

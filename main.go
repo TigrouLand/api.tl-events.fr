@@ -6,6 +6,7 @@ import (
 	"github.com/tigrouland/api/mongo"
 	"github.com/tigrouland/api/routes"
 	"github.com/tigrouland/api/routes/auth"
+	"github.com/tigrouland/api/routes/user"
 	"log"
 )
 
@@ -25,6 +26,7 @@ func main() {
 	r.GET("/", routes.Main)
 	r.GET("/members", routes.Members)
 	r.GET("/modifiers", routes.Modifiers)
+	r.GET("/stats", routes.Stats)
 
 	gamesGroup := r.Group("/games")
 	{
@@ -32,13 +34,16 @@ func main() {
 		gamesGroup.GET("/upcoming", routes.UpcomingGame)
 	}
 
-	r.GET("/stats", routes.Stats)
-
 	authGroup := r.Group("/auth")
 	{
 		authGroup.GET("/login", auth.Login)
 		authGroup.GET("/callback", auth.Callback)
 		authGroup.GET("/self", userFetch, userRequired, auth.Self)
+	}
+
+	userGroup := r.Group("/user/:id")
+	{
+		userGroup.GET("/statistics", user.Statistics)
 	}
 
 	err := r.Run()

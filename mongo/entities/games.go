@@ -33,6 +33,8 @@ type ArchivedGame struct {
 	FinalTeams  map[string]string `bson:"finalTeams" json:"finalTeams,omitempty"`
 	PlayerRoles map[string]string `bson:"playerRoles" json:"playerRoles,omitempty"`
 
+	HiddenRoles *bool `bson:"hiddenRoles" json:"hiddenRoles"`
+
 	Hours   int8 `bson:"hours" json:"hours"`
 	Minutes int8 `bson:"minutes" json:"minutes"`
 	Seconds int8 `bson:"seconds" json:"seconds"`
@@ -68,6 +70,8 @@ type Game struct {
 
 	// PlayerTeams map[string]string `bson:"playerTeams" json:"playerTeams,omitempty"`
 	// PlayerRoles map[string]string `bson:"playerRoles" json:"playerRoles,omitempty"`
+
+	// HiddenRoles *bool `bson:"hiddenRoles" json:"hiddenRoles"`
 
 	Hours   int8 `bson:"hours" json:"hours"`
 	Minutes int8 `bson:"minutes" json:"minutes"`

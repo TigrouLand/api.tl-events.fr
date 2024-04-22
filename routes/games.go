@@ -84,23 +84,23 @@ func DecodeGame(game *entities.Game, ctx context.Context) {
 			}
 		}
 
-		if len(game.TeamRefs) > 0 {
-			for i := range game.TeamRefs {
-				var team entities.Team
-				if !(game.TeamRefs[i] == mongo.DBRef{}) {
-					result := mongo.Get().Collection("teams").FindOne(ctx, bson.M{"_id": game.TeamRefs[i].ID})
-					if result.Err() != nil {
-						log.Fatal(result.Err())
-					}
-					err := result.Decode(&team)
-					if err != nil {
-						log.Fatal(err)
-					}
-
-					game.Teams = append(game.Teams, team)
-				}
-			}
-		}
+		//if len(game.TeamRefs) > 0 {
+		//	for i := range game.TeamRefs {
+		//		var team entities.Team
+		//		if !(game.TeamRefs[i] == mongo.DBRef{}) {
+		//			result := mongo.Get().Collection("teams").FindOne(ctx, bson.M{"_id": game.TeamRefs[i].ID})
+		//			if result.Err() != nil {
+		//				log.Fatal(result.Err())
+		//			}
+		//			err := result.Decode(&team)
+		//			if err != nil {
+		//				log.Fatal(err)
+		//			}
+		//
+		//			game.Teams = append(game.Teams, team)
+		//		}
+		//	}
+		//}
 	}
 }
 

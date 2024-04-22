@@ -63,8 +63,8 @@ type Game struct {
 
 	// Logs []string `bson:"logs" json:"logs"`
 
-	TeamRefs []mongo.DBRef `bson:"baseTeams" json:"-"`
-	Teams    []Team        `json:"teams,omitempty"`
+	// TeamRefs []mongo.DBRef `bson:"baseTeams" json:"-"`
+	// Teams    []Team        `json:"teams,omitempty"`
 
 	// PlayerTeams map[string]string `bson:"playerTeams" json:"playerTeams,omitempty"`
 	// PlayerRoles map[string]string `bson:"playerRoles" json:"playerRoles,omitempty"`
